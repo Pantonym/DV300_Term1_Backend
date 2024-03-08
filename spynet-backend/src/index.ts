@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
-// import AppDataSource from './datasource';
+import AppDataSource from './datasource';
+import recipeRouter from './routes/recipeRoute';
 
 // remember to install Cors (npm i cors), then require it, not import
 const cors = require('cors');
@@ -12,12 +13,13 @@ app.use(cors()); // middleware
 dotenv.config();
 
 // import datasource
-// const appDataSource = AppDataSource;
+const appDataSource = AppDataSource;
 
 app.get('/', (req, res) => {
-    res.send('Send, Help!');
+    res.send('DV300 Backend');
 });
 
+// get all users
 app.get('/users', async (req, res) => {
     // const users = await appDataSource.manager.find(Lecturer);
 
@@ -34,7 +36,7 @@ app.get('/users/:id', async (req, res) => {
 })
 
 // IMPORT ENDPOINTS
-// app.use('/inventory', inventoryRouter);
+app.use('/recipe', recipeRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('Server is listening on port 3000');
