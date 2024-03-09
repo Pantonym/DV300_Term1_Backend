@@ -1,19 +1,19 @@
 import express from "express";
 import AppDataSource from "../datasource";
-import { Recipe } from "../entities/recipe";
+import { Ingredients } from "../entities/ingredients";
 
-const recipeRouter = express.Router()
+const ingredientRouter = express.Router()
 
-recipeRouter.use(express.json())
+ingredientRouter.use(express.json())
 
 const appDataSource = AppDataSource;
 
-// get all recipes items
+// get all ingredient items
 // add async await if an error is sent back 
-recipeRouter.get("/", async (req, res) => {
+ingredientRouter.get("/", async (req, res) => {
 
     try {
-        const items = await appDataSource.getRepository(Recipe).find();
+        const items = await appDataSource.getRepository(Ingredients).find();
         res.json(items);
     } catch (error) {
         console.error("Error fetching inventory items", error);
@@ -25,18 +25,18 @@ recipeRouter.get("/", async (req, res) => {
 // TODO: Recipe Get All
 
 // get single recipe
-recipeRouter.get("/:id", (req, res) => {
+ingredientRouter.get("/:id", (req, res) => {
 
 })
 
 // create recipe
-recipeRouter.put("/create", (req, res) => {
+ingredientRouter.put("/create", (req, res) => {
     const { name, description, amountCrafted, ingredientsNeeded } = req.body;
 })
 
 // Update single recipe item
 // TypeORM searches for the Private key, and if it exists, it will change from create to update automatically.
-recipeRouter.put("/update/:id", async (req, res) => {
+ingredientRouter.put("/update/:id", async (req, res) => {
 
     // try {
 
@@ -68,4 +68,4 @@ recipeRouter.put("/update/:id", async (req, res) => {
 
 })
 
-export default recipeRouter;
+export default ingredientRouter;

@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import AppDataSource from './datasource';
 import recipeRouter from './routes/recipeRoute';
+import ingredientRouter from './routes/ingredientsRoute';
 
 // remember to install Cors (npm i cors), then require it, not import
 const cors = require('cors');
@@ -36,7 +37,8 @@ app.get('/users/:id', async (req, res) => {
 })
 
 // IMPORT ENDPOINTS
-app.use('/recipe', recipeRouter);
+app.use('/recipes', recipeRouter);
+app.use('/ingredients', ingredientRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('Server is listening on port 3000');

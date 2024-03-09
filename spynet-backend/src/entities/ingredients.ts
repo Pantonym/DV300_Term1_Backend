@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Recipe {
+export class Ingredients {
 
     @PrimaryGeneratedColumn()
     id: number = 0;
@@ -13,9 +13,6 @@ export class Recipe {
     description!: string;
 
     @Column()
-    amountCrafted!: number; // how many of this entity will be crafted/placed into your inventory when the recipe is used
-
-    @Column("int", { array: true })
-    ingredientsNeeded!: number[];
+    image!: string;
 
 }
