@@ -15,6 +15,18 @@ export class Recipe {
     @Column()
     amountCrafted!: number; // how many of this entity will be crafted/placed into your inventory when the recipe is used
 
+    @Column()
+    totalWarehouse1!: number; 
+
+    @Column()
+    totalWarehouse2!: number; 
+
+    @Column()
+    totalWarehouse3!: number; 
+
+    @Column()
+    totalAmount!: number; 
+
     @Column("int", { array: true })
     ingredientsNeeded!: number[];
 
