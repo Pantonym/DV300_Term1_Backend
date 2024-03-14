@@ -22,8 +22,6 @@ recipeRouter.get("/", async (req, res) => {
 
 })
 
-// TODO: Recipe Get All
-
 // get single recipe
 recipeRouter.get("/:id", (req, res) => {
 

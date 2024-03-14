@@ -9,17 +9,6 @@ UserRouter.use(express.json())
 const appDataSource = AppDataSource;
 
 // add async await if an error is sent back 
-UserRouter.get("/", async (req, res) => {
-
-    try {
-        const items = await appDataSource.getRepository(User).find();
-        res.json(items);
-    } catch (error) {
-        console.error("Error fetching user data", error);
-        res.status(500).json({ error: 'Internal service error' });
-    }
-
-})
 
 // get all User info
 UserRouter.get("/", async (req, res) => {
