@@ -1,6 +1,7 @@
 import express from "express";
 import AppDataSource from "../datasource";
 import { User } from "../entities/user";
+import * as bcrypt from 'bcrypt';
 
 const UserRouter = express.Router()
 
@@ -21,48 +22,76 @@ UserRouter.get("/", async (req, res) => {
     }
 });
 
-// get single user
-UserRouter.get("/:id", (req, res) => {
+// Post endpoint for user creation
+UserRouter.post("/addUser", async (req, res) => {
+    try {
 
+        const { email, password, isAdmin } = req.body;
+
+        var newUser = new User();
+
+        newUser.email = email;
+        newUser.password = password;
+        newUser.isAdmin = isAdmin;
+
+        var addedUser = await appDataSource.getRepository(User).save(newUser);
+
+        return res.json(addedUser);
+
+    } catch (error) {
+        console.log("SOMETHING WENT WRONG");
+        return res.status(500).json({ message: error });
+    }
 })
 
-// create new user profile
-UserRouter.put("/create", (req, res) => {
-    const { name, isAdmin } = req.body;
-})
+// Post endpoint for login
+// Admin login info: glen@gmail.com; glen
+// Non-Admin login info: john@gmail.com; john
+UserRouter.post('/login', async (req, res) => {
+    try {
 
-// Update single user's info
-// TypeORM searches for the Private key, and if it exists, it will change from create to update automatically.
-UserRouter.put("/update/:id", async (req, res) => {
+        // get email & password from the http request
+        const { email, password } = req.body;
 
-    // try {
+        // if both of these variables exist
+        if (email && password) {
 
-    //     const id = parseInt(req.params.id); //id of the item we want to update
-    //     const { name, category, icon, description, amount } = req.body; // all the values that we want to update
+            // find the user by their email
+            let userRequest = await appDataSource.getRepository(User).findOneBy({ email: email });
 
-    //     const recipeRouter = await appDataSource.getRepository(Recipe)
-    //         .findOneBy({ id: id });
+            if (!userRequest) { //cant find the user
 
-    //     // if inventoryItem is null
-    //     if (!recipeRouter) {
-    //         res.status(404).json({ message: "No item found" });
-    //     } else {
-    //         // update all the variables of inventoryItem that you want to update
-    //         recipeRouter!.amount = amount;
+                return res.status(404).json({ message: "Invalid Credentials" })
 
-    //         // save the changes
+            } else { //the email is correct
 
-    //         const updatedItem = await appDataSource.getRepository(Recipe).save(recipeRouter!);
-    //         res.json(updatedItem);
-    //     }
+                // check if the passwords match
+                bcrypt.compare(password, userRequest.password, (error, result) => {
+                    // result will be true or false
+                    if (result) { //passwords match
 
-    //     // NB Send only one response. Multiple res.json statements causes the server to crash.
+                        userRequest!.password = "Protected by SpyNet"; //set the password to empty to not expose it. This protects user information. This will not save the password to an empty string as it does not call the .save function.
+                        return res.json(userRequest) //send the user data if login is a success
 
-    // } catch (error) {
-    //     console.error("Error updating inventory item.", error);
-    //     res.status(500).json({ error: "Internal Service Error" });
-    // }
+                    } else { //passwords do not match
 
+                        return res.status(500).json({ message: "Invalid Credentials" })
+
+                    }
+                })
+
+            }
+
+        } else {//the values are empty/do not exist
+
+            return res.status(500).json({ message: "Invalid Credentials" })
+
+        }
+
+    } catch (error) {
+        console.log("SOMETHING WENT WRONG");
+        return res.status(500).json({ message: error });
+    }
 })
 
 export default UserRouter;

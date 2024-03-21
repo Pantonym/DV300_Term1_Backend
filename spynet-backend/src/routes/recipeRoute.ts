@@ -1,12 +1,15 @@
 import express from "express";
 import AppDataSource from "../datasource";
 import { Recipe } from "../entities/recipe";
+import { Ingredients } from "../entities/ingredients";
 
 const recipeRouter = express.Router()
 
 recipeRouter.use(express.json())
 
 const appDataSource = AppDataSource;
+
+var warehouseNum = 0;
 
 // get all recipes items
 // add async await if an error is sent back 
@@ -22,48 +25,89 @@ recipeRouter.get("/", async (req, res) => {
 
 })
 
-// get single recipe
-recipeRouter.get("/:id", (req, res) => {
+// Update recipe and inventory info when crafted
+recipeRouter.put("/:id/craft", async (req, res) => {
+    try {
 
+        let id = parseInt(req.params.id);
+        let { amount, ingredients, warehouse } = req.body;
+
+        var recipeRequest = await appDataSource.getRepository(Recipe).findOneBy({ id: id });
+
+        if (!recipeRequest) {
+            return res.status(500).json({ message: "no recipe found" });
+        } else {
+
+            // variable to see which warehouse was affected
+            warehouseNum = warehouse;
+
+            // change which warehouse is affected based on the values sent through the req.body
+            if (warehouseNum == 1) {
+                // update the amount that has been crafted
+                recipeRequest!.totalWarehouse1 = amount; // updates (already incremented in frontend)
+
+            } else if (warehouseNum == 2) {
+                // update the amount that has been crafted
+                recipeRequest!.totalWarehouse2 = amount;
+
+            } else {
+                // update the amount that has been crafted
+                recipeRequest!.totalWarehouse3 = amount;
+
+            }
+
+            recipeRequest!.totalAmount = recipeRequest!.totalWarehouse1 + recipeRequest!.totalWarehouse2 + recipeRequest!.totalWarehouse3;
+
+            // Loop through the ingredients and deduct the inventory amount
+            await updateInventoryAmount(ingredients);
+
+            // Save our recipe amount and return it
+            var newRecipeData = await appDataSource.getRepository(Recipe).save(recipeRequest);
+            return res.json(newRecipeData);
+        }
+
+    } catch (error) {
+        return res.status(500).json({ message: error });
+    }
 })
 
-// create recipe
-recipeRouter.put("/create", (req, res) => {
-    const { name, description, amountCrafted, ingredientsNeeded } = req.body;
-})
+const updateInventoryAmount = async (ingredients: Ingredients[]) => {
 
-// Update single recipe item
-// TypeORM searches for the Private key, and if it exists, it will change from create to update automatically.
-recipeRouter.put("/update/:id", async (req, res) => {
+    try {
 
-    // try {
+        for (var ingredient of ingredients) {
+            var ingredientItem = await appDataSource.getRepository(Ingredients).findOneBy({ id: ingredient.id });
 
-    //     const id = parseInt(req.params.id); //id of the item we want to update
-    //     const { name, category, icon, description, amount } = req.body; // all the values that we want to update
+            if (!ingredientItem) {
+                throw new Error(`Inventory item with ID ${ingredient.id} not found`);
+            }
 
-    //     const recipeRouter = await appDataSource.getRepository(Recipe)
-    //         .findOneBy({ id: id });
+            // change which warehouse is affected based on the values sent through the req.body
+            if (warehouseNum == 1) {
+                // update the ingredient amount
+                ingredientItem!.totalWarehouse1 = ingredientItem!.totalWarehouse1 - 1; // Each item can only be used once, so there is no need for an amount needed table
 
-    //     // if inventoryItem is null
-    //     if (!recipeRouter) {
-    //         res.status(404).json({ message: "No item found" });
-    //     } else {
-    //         // update all the variables of inventoryItem that you want to update
-    //         recipeRouter!.amount = amount;
+            } else if (warehouseNum == 2) {
+                // update the ingredient amount
+                ingredientItem!.totalWarehouse2 = ingredientItem!.totalWarehouse2 - 1;
 
-    //         // save the changes
 
-    //         const updatedItem = await appDataSource.getRepository(Recipe).save(recipeRouter!);
-    //         res.json(updatedItem);
-    //     }
+            } else {
+                // update the ingredient amount
+                ingredientItem!.totalWarehouse3 = ingredientItem!.totalWarehouse3 - 1;
 
-    //     // NB Send only one response. Multiple res.json statements causes the server to crash.
+            }
 
-    // } catch (error) {
-    //     console.error("Error updating inventory item.", error);
-    //     res.status(500).json({ error: "Internal Service Error" });
-    // }
+            ingredientItem!.totalAmount = ingredientItem!.totalWarehouse1 + ingredientItem!.totalWarehouse2 + ingredientItem!.totalWarehouse3;
 
-})
+            await appDataSource.getRepository(Ingredients).save(ingredientItem!);
+        }
+
+    } catch (error) {
+        console.log("SOMETHING WENT WRONG " + error);
+        throw error;
+    }
+
+}
 
 export default recipeRouter;

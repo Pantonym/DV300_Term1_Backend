@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import AppDataSource from './datasource';
 import recipeRouter from './routes/recipeRoute';
 import ingredientRouter from './routes/ingredientsRoute';
 import UserRouter from './routes/userRoute';
@@ -14,9 +13,6 @@ const app = express();
 app.use(cors()); // middleware
 
 dotenv.config();
-
-// import datasource
-const appDataSource = AppDataSource;
 
 app.get('/', (req, res) => {
     res.send('DV300 Backend');
