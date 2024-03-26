@@ -25,6 +25,36 @@ recipeRouter.get("/", async (req, res) => {
 
 })
 
+// get single recipe item
+recipeRouter.get("/:id/get", async (req, res) => {
+
+    let id = parseInt(req.params.id);
+
+    try {
+        const item = await appDataSource.getRepository(Recipe).findOneBy({ id: id });
+        res.json(item);
+    } catch (error) {
+        console.error("Error fetching inventory items", error);
+        res.status(500).json({ error: 'Internal service error' });
+    }
+
+})
+
+// get single recipe item's ingredients
+recipeRouter.get("/:id/getIngredients", async (req, res) => {
+
+    let id = parseInt(req.params.id);
+
+    try {
+        const item = await appDataSource.getRepository(Recipe).findOneBy({ id: id });
+        res.json(item?.ingredientsNeeded);
+    } catch (error) {
+        console.error("Error fetching inventory items", error);
+        res.status(500).json({ error: 'Internal service error' });
+    }
+
+})
+
 // Update recipe and inventory info when crafted
 recipeRouter.put("/:id/craft", async (req, res) => {
     try {
@@ -38,32 +68,35 @@ recipeRouter.put("/:id/craft", async (req, res) => {
             return res.status(500).json({ message: "no recipe found" });
         } else {
 
-            // variable to see which warehouse was affected
-            warehouseNum = warehouse;
-
             // change which warehouse is affected based on the values sent through the req.body
-            if (warehouseNum == 1) {
+            if (warehouse === 1) {
                 // update the amount that has been crafted
-                recipeRequest!.totalWarehouse1 = amount; // updates (already incremented in frontend)
+                recipeRequest!.totalWarehouse1 = recipeRequest!.totalWarehouse1 + amount; // updates (already incremented in frontend)
 
-            } else if (warehouseNum == 2) {
+            } else if (warehouse === 2) {
                 // update the amount that has been crafted
-                recipeRequest!.totalWarehouse2 = amount;
+                recipeRequest!.totalWarehouse2 = recipeRequest!.totalWarehouse2 + amount;
 
-            } else {
+            } else if (warehouse === 3) {
                 // update the amount that has been crafted
-                recipeRequest!.totalWarehouse3 = amount;
+                recipeRequest!.totalWarehouse3 = recipeRequest!.totalWarehouse3 + amount;
 
             }
 
             recipeRequest!.totalAmount = recipeRequest!.totalWarehouse1 + recipeRequest!.totalWarehouse2 + recipeRequest!.totalWarehouse3;
 
             // Loop through the ingredients and deduct the inventory amount
-            await updateInventoryAmount(ingredients);
+            var canCraft = await updateInventoryAmount(ingredients, warehouse);
 
-            // Save our recipe amount and return it
-            var newRecipeData = await appDataSource.getRepository(Recipe).save(recipeRequest);
-            return res.json(newRecipeData);
+            if (canCraft) {
+                // Save our recipe amount and return it
+                var newRecipeData = await appDataSource.getRepository(Recipe).save(recipeRequest);
+                return res.json(newRecipeData);
+
+            } else {
+                return res.status(500).json({ error: "uncraftable" });
+            }
+
         }
 
     } catch (error) {
@@ -71,37 +104,74 @@ recipeRouter.put("/:id/craft", async (req, res) => {
     }
 })
 
-const updateInventoryAmount = async (ingredients: Ingredients[]) => {
+const updateInventoryAmount = async (ingredients: any[], warehouse: number) => {
 
     try {
+        var ingredientItems: Ingredients[] = [];
 
         for (var ingredient of ingredients) {
-            var ingredientItem = await appDataSource.getRepository(Ingredients).findOneBy({ id: ingredient.id });
+            var ingredientItem = await appDataSource.getRepository(Ingredients).findOneBy({ id: ingredient.data.id });
 
             if (!ingredientItem) {
-                throw new Error(`Inventory item with ID ${ingredient.id} not found`);
+                throw new Error(`Inventory item with ID ${ingredient.data.id} not found`);
+            } else {
+
+                if (warehouse === 1) {
+                    // update the ingredient amount
+                    if (ingredientItem.totalWarehouse1 <= 0) {
+                        return false;
+
+                    } else {
+                        ingredientItems.push(ingredientItem);
+                    }
+
+                } else if (warehouse === 2) {
+                    // update the ingredient amount
+                    if (ingredientItem!.totalWarehouse2 <= 0) {
+                        return false;
+
+                    } else {
+                        ingredientItems.push(ingredientItem)
+                    }
+
+                } else if (warehouse === 3) {
+                    // update the ingredient amount
+                    if (ingredientItem!.totalWarehouse3 <= 0) {
+                        return false;
+
+                    } else {
+                        ingredientItems.push(ingredientItem);
+                    }
+
+                }
             }
+
+        }
+
+        for (var ingredientExample of ingredientItems) {
 
             // change which warehouse is affected based on the values sent through the req.body
-            if (warehouseNum == 1) {
+            if (warehouse === 1) {
                 // update the ingredient amount
-                ingredientItem!.totalWarehouse1 = ingredientItem!.totalWarehouse1 - 1; // Each item can only be used once, so there is no need for an amount needed table
+                // Each item can only be used once, so there is no need for an amount needed table
+                ingredientExample!.totalWarehouse1 = ingredientExample!.totalWarehouse1 - 1;
 
-            } else if (warehouseNum == 2) {
-                // update the ingredient amount
-                ingredientItem!.totalWarehouse2 = ingredientItem!.totalWarehouse2 - 1;
+            } else if (warehouse === 2) {
+                // Each item can only be used once, so there is no need for an amount needed table
+                ingredientExample!.totalWarehouse2 = ingredientExample!.totalWarehouse2 - 1;
 
-
-            } else {
-                // update the ingredient amount
-                ingredientItem!.totalWarehouse3 = ingredientItem!.totalWarehouse3 - 1;
+            } else if (warehouse === 3) {
+                // Each item can only be used once, so there is no need for an amount needed table
+                ingredientExample!.totalWarehouse3 = ingredientExample!.totalWarehouse3 - 1;
 
             }
 
-            ingredientItem!.totalAmount = ingredientItem!.totalWarehouse1 + ingredientItem!.totalWarehouse2 + ingredientItem!.totalWarehouse3;
+            ingredientExample!.totalAmount = ingredientExample!.totalWarehouse1 + ingredientExample!.totalWarehouse2 + ingredientExample!.totalWarehouse3;
 
-            await appDataSource.getRepository(Ingredients).save(ingredientItem!);
+            await appDataSource.getRepository(Ingredients).save(ingredientExample!);
         }
+
+        return true;
 
     } catch (error) {
         console.log("SOMETHING WENT WRONG " + error);
