@@ -27,6 +27,9 @@ export class Recipe {
     @Column()
     totalAmount!: number; 
 
+    @Column()
+    image!: string;
+
     @Column("int", { array: true })
     ingredientsNeeded!: number[];
 
