@@ -37,4 +37,19 @@ ingredientRouter.get("/:id/get", async (req, res) => {
 
 })
 
+// buy single ingredient item
+ingredientRouter.get("/:id/buy", async (req, res) => {
+
+    let id = parseInt(req.params.id);
+
+    try {
+        const item = await appDataSource.getRepository(Ingredients).findOneBy({ id: id });
+        res.json(item);
+    } catch (error) {
+        console.error("Error fetching inventory items", error);
+        res.status(500).json({ error: 'Internal service error' });
+    }
+
+})
+
 export default ingredientRouter;
