@@ -39,8 +39,8 @@ ingredientRouter.get("/:id/get", async (req, res) => {
 
 })
 
-// buy single ingredient item
-ingredientRouter.get("/:id/buy", async (req, res) => {
+// buy single ingredient item (update its value in the respective warehouse to be +1)
+ingredientRouter.put("/:id/buy", async (req, res) => {
 
     let id = parseInt(req.params.id);
     let { warehouse } = req.body;

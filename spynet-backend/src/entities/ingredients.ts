@@ -9,16 +9,16 @@ export class Ingredients {
     @Column()
     name!: string;
 
-    @Column()
+    @Column({ default: 0 })
     totalWarehouse1!: number; 
 
-    @Column()
-    totalWarehouse2!: number; 
+    @Column({ default: 0 })
+    totalWarehouse2: number = 0; 
 
-    @Column()
+    @Column({ default: 0 })
     totalWarehouse3!: number; 
 
-    @Column()
+    @Column({ default: 0 })
     totalAmount!: number;
 
     @Column({length: 255})
