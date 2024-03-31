@@ -8,6 +8,8 @@ ingredientRouter.use(express.json())
 
 const appDataSource = AppDataSource;
 
+var warehouseNum = 0;
+
 // get all ingredient items
 // add async await if an error is sent back 
 ingredientRouter.get("/", async (req, res) => {
@@ -41,12 +43,35 @@ ingredientRouter.get("/:id/get", async (req, res) => {
 ingredientRouter.get("/:id/buy", async (req, res) => {
 
     let id = parseInt(req.params.id);
+    let { warehouse } = req.body;
+
+    warehouseNum = warehouse;
 
     try {
         const item = await appDataSource.getRepository(Ingredients).findOneBy({ id: id });
-        res.json(item);
+
+        if (!item) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+
+        switch (warehouse) {
+            case 1:
+                item.totalWarehouse1 += 1;
+                break;
+            case 2:
+                item.totalWarehouse2 += 1;
+                break;
+            case 3:
+                item.totalWarehouse3 += 1;
+                break;
+            default:
+                return res.status(400).json({ error: 'Invalid warehouse number' });
+        }
+
+        const updatedItem = await appDataSource.getRepository(Ingredients).save(item);
+        res.json(updatedItem);
     } catch (error) {
-        console.error("Error fetching inventory items", error);
+        console.error("Error updating inventory item", error);
         res.status(500).json({ error: 'Internal service error' });
     }
 
