@@ -7,7 +7,7 @@ const AppDataSource = new DataSource(
         "port": 5432,
         "username": "postgres",
         "database": "spynet",
-        "password": "Admin",
+        "password": "1234",
         // password will be "Admin" or "1234", depending on who is accessing the database (Glen or I)
         "entities": ["src/entities/**"],
         "logging": true,
