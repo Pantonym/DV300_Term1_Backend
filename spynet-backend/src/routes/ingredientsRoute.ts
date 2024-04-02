@@ -39,6 +39,21 @@ ingredientRouter.get("/:id/get", async (req, res) => {
 
 })
 
+// create a new ingredient
+ingredientRouter.post("/", async (req, res) => {
+
+    let { ingredientName } = req.body;
+
+    try {
+        const newIngredient = appDataSource.getRepository(Ingredients).create({ name: ingredientName });
+        await appDataSource.getRepository(Ingredients).save(newIngredient);
+        res.status(201).json(newIngredient);
+    } catch (error) {
+        console.error("Error creating new ingredient", error);
+        res.status(500).json({ error: 'Internal service error' });
+    }
+})
+
 // buy single ingredient item (update its value in the respective warehouse to be +1)
 ingredientRouter.put("/:id/buy", async (req, res) => {
 

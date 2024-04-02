@@ -4,16 +4,16 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class Ingredients {
 
     @PrimaryGeneratedColumn()
-    id: number = 0;
+    id!: number;
 
-    @Column()
+    @Column({default: 'Decrypting name...'})
     name!: string;
 
     @Column({ default: 0 })
     totalWarehouse1!: number; 
 
     @Column({ default: 0 })
-    totalWarehouse2: number = 0; 
+    totalWarehouse2!: number; 
 
     @Column({ default: 0 })
     totalWarehouse3!: number; 
@@ -21,10 +21,10 @@ export class Ingredients {
     @Column({ default: 0 })
     totalAmount!: number;
 
-    @Column({length: 255})
+    @Column({length: 255, default: 'Decrypting description...'})
     description!: string;
 
-    @Column()
+    @Column({ default: "../../../assets/ingredients/loadingItem.png" })
     image!: string;
 
 }
