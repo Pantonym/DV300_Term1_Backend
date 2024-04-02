@@ -9,7 +9,7 @@
 <!-- Logo and link to repository -->
 <p align="center">
   <a href="https://github.com/Pantonym/DV300_Term1_Backend">
-    <img src="spynet/src/Assets/readmeAssets/Logo.png" width="100px">
+    <img src="spynet-backend/src/Assets/readmeAssets/Logo.png" width="100px">
   </a>
 </p>
 
@@ -65,6 +65,7 @@
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
 - [References](#references)
+- [Frontend Link](#frontend-link)
 
 <!-- About the Project -->
 ## About the Project
@@ -193,7 +194,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 **Nico van Wyk** - [221179@virtualwindow.co.za](mailto:221179@virtualwindow.co.za)
 
 * **Project Link** - https://github.com/Pantonym/DV200_Term1_Backend
-* 
+
 <!-- ACKNOWLEDGEMENTS -->
 <!-- all resources that you used and Acknowledgements here -->
 ## Acknowledgements
@@ -205,3 +206,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 * https://jng15.medium.com/typescript-basics-type-system-cac2e848b4aa (TypeScript Logo Image)
 * https://www.axios.com/press-past-releases/axios-launches-centralized-news-hub (AXIOS Logo Image)
 * https://medium.com/@amitrani/getting-started-with-postgresql-5990b54f7169 (PostgreSQL Logo Image)
+
+## Frontend Link
+* To see the Frontend of the application, follow [this link](https://github.com/Pantonym/DV300_Term1).
