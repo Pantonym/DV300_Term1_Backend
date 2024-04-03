@@ -9,7 +9,7 @@
 <!-- Logo and link to repository -->
 <p align="center">
   <a href="https://github.com/Pantonym/DV300_Term1_Backend">
-    <img src="spynet-backend/src/Assets/readmeAssets/Logo.png" width="100px">
+    <img src="spynet-backend/src/assets/readmeAssets/Logo.png" width="100px">
   </a>
 </p>
 
@@ -73,7 +73,7 @@
 
 <!-- Mockup -->
 ### Mockup
-<img src="spynet-backend/src/Assets/readmeAssets/Login.jpg" alt="Mockup" style="height: 600px"/>
+<img src="spynet-backend/src/assets/readmeAssets/Login.jpg" alt="Mockup" style="height: 600px"/>
 
 <!--PROJECT DESCRIPTION-->
 ### Project Description
@@ -91,7 +91,7 @@ SpyNet is a management website where users can purchase ingredients and craft it
 * Ensures that your variable declarations and assignments remain consistent, which reduces bugs.
 * Being built on JavaScript, TypeScript functions in any place JS does, most importantly Node.js.
 <p>TypeScript was used to build the front end, as well as the backend.</p>
-<img src="spynet-backend/src/Assets/readmeAssets/TS.png" alt="TS_Logo" style="width: 300px; height: auto;" />
+<img src="spynet-backend/src/assets/readmeAssets/TS.png" alt="TS_Logo" style="width: 300px; height: auto;" />
 
 <!-- Angular TS -->
 #### Angular TS
@@ -99,7 +99,7 @@ SpyNet is a management website where users can purchase ingredients and craft it
 * It is maintained by Google, and follows single-page routing.
 * Used to create the frontend of the website.
 <p>Angular TS allowed us to build and test the frontend of the website.</p>
-<img src="spynet-backend/src/Assets/readmeAssets/AXIOS.png" alt="AJAX-Logo" style="width: 400px; height: 225px;"/>
+<img src="spynet-backend/src/assets/readmeAssets/AXIOS.png" alt="AJAX-Logo" style="width: 400px; height: 225px;"/>
 
 <!-- PostgreSQL -->
 #### PostgreSQL
@@ -107,7 +107,7 @@ SpyNet is a management website where users can purchase ingredients and craft it
 * Uses Structured Query Language (SQL)
 * Supports more complex data models than MySQL.
 <p>PostgreSQL was used to implement backend functionality to implement CRUD functionality to the website.</p>
-<img src="spynet-backend/src/Assets/readmeAssets/PostgreSQL.png" alt="Bootstrap-Logo" style="width: 400px; height: auto;"/>
+<img src="spynet-backend/src/assets/readmeAssets/PostgreSQL.png" alt="Bootstrap-Logo" style="width: 400px; height: auto;"/>
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -169,10 +169,10 @@ For Future Implementation, please regard the main project ReadMe file at: https:
 ## Final Outcome
 <!-- MOCKUPS -->
 ### Mockups
-<img src="spynet-backend/src/Assets/readmeAssets/Login.jpg" alt="Mockup" style="height: 600px"/>
-<img src="spynet-backend/src/Assets/readmeAssets/Warehouses.jpg" alt="Mockup" style="height: 600px"/>
-<img src="spynet-backend/src/Assets/readmeAssets/Dashboard.jpg" alt="Mockup" style="height: 600px"/>
-<img src="spynet-backend/src/Assets/readmeAssets/MarketplaceAdmin.jpg" alt="Mockup" style="height: 600px"/>
+<img src="spynet-backend/src/assets/readmeAssets/Login.jpg" alt="Mockup" style="height: 600px"/>
+<img src="spynet-backend/src/assets/readmeAssets/Warehouses.jpg" alt="Mockup" style="height: 600px"/>
+<img src="spynet-backend/src/assets/readmeAssets/Dashboard.jpg" alt="Mockup" style="height: 600px"/>
+<img src="spynet-backend/src/assets/readmeAssets/MarketplaceAdmin.jpg" alt="Mockup" style="height: 600px"/>
 
 <br>
 
