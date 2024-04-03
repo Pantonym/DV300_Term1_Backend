@@ -60,6 +60,7 @@
   - [Future Implementation](#future-implementation)
 - [Final Outcome](#final-outcome)
   - [Mockups](#mockups)
+  - [Video Demonstration](#video-demonstration)
 - [License](#license)
 - [Authors](#authors)
 - [Contact](#contact)
@@ -176,8 +177,8 @@ For Future Implementation, please regard the main project ReadMe file at: https:
 <br>
 
 <!-- Video Demonstration -->
-<!-- ### Video Demonstration -->
-<!-- **Video Demonstration:** <a href="">Google Drive Link</a> -->
+### Video Demonstration
+**Video Demonstration:** <a href="">Google Drive Link</a>
 
 <!-- LICENSE -->
 ## License
