@@ -54,7 +54,7 @@ ingredientRouter.post("/", async (req, res) => {
     }
 })
 
-// buy single ingredient item (update its value in the respective warehouse to be +1)
+// buy single ingredient item (update its value in the respective warehouse AND THE TOTAL to be +1)
 ingredientRouter.put("/:id/buy", async (req, res) => {
 
     let id = parseInt(req.params.id);
@@ -72,12 +72,15 @@ ingredientRouter.put("/:id/buy", async (req, res) => {
         switch (warehouse) {
             case 1:
                 item.totalWarehouse1 += 1;
+                item.totalAmount += 1;
                 break;
             case 2:
                 item.totalWarehouse2 += 1;
+                item.totalAmount += 1;
                 break;
             case 3:
                 item.totalWarehouse3 += 1;
+                item.totalAmount += 1;
                 break;
             default:
                 return res.status(400).json({ error: 'Invalid warehouse number' });
