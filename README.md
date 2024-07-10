@@ -99,7 +99,7 @@ SpyNet is a management website where users can purchase ingredients and craft it
 * It is maintained by Google, and follows single-page routing.
 * Used to create the frontend of the website.
 <p>Angular TS allowed us to build and test the frontend of the website.</p>
-<img src="spynet-backend/src/assets/readmeAssets/AXIOS.png" alt="AJAX-Logo" style="width: 400px; height: 225px;"/>
+<img src="spynet/src/assets/readmeAssets/Angular.png" alt="Angular-Logo" style="width: 400px; height: 225px;"/>
 
 <!-- PostgreSQL -->
 #### PostgreSQL
@@ -205,7 +205,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## References
 * https://jng15.medium.com/typescript-basics-type-system-cac2e848b4aa (TypeScript Logo Image)
-* https://www.axios.com/press-past-releases/axios-launches-centralized-news-hub (AXIOS Logo Image)
+* https://en.m.wikipedia.org/wiki/File:Angular_full_color_logo.svg (Angular Logo Image)
 * https://medium.com/@amitrani/getting-started-with-postgresql-5990b54f7169 (PostgreSQL Logo Image)
 
 ## Frontend Link
